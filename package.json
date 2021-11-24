@@ -1,7 +1,16 @@
 {
   "name": "query-builder-odata",
   "version": "1.0.0",
+  "keywords": [
+    "odata",
+    "query builder"
+  ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xiadevisser/query-builder-odata.git"
+  },
+  "homepage": "https://github.com/xiadevisser/query-builder-odata",
   "scripts": {
     "start": "npx tsc -w",
     "build": "npx tsc",
