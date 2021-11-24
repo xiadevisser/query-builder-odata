@@ -11,6 +11,9 @@
     "url": "https://github.com/xiadevisser/query-builder-odata.git"
   },
   "homepage": "https://github.com/xiadevisser/query-builder-odata",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "start": "npx tsc -w",
     "build": "npx tsc",
