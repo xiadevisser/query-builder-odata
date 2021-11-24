@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "npx tsc -w",
+    "build": "npx tsc",
     "test": "jest",
     "test:cov": "jest --collect-coverage"
   },
