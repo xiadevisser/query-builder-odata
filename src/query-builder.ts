@@ -14,12 +14,12 @@ export class QueryBuilder {
     this.query.push(`$count=true`);
     return this;
   }
-  public select(fields: string): QueryBuilder {
-    this.query.push(`$select=${fields}`);
+  public select(...fields: string[]): QueryBuilder {
+    this.query.push(`$select=${fields.join(',')}`);
     return this;
   }
-  public orderBy(fields: string): QueryBuilder {
-    this.query.push(`$orderBy=${fields}`);
+  public orderBy(...fields: string[]): QueryBuilder {
+    this.query.push(`$orderBy=${fields.join(',')}`);
     return this;
   }
   public expand(field: string, ...callbacks: ((builder: QueryBuilder) => void)[]): QueryBuilder {

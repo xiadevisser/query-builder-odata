@@ -2,10 +2,10 @@ import { QueryBuilder } from "../src/query-builder";
 
 describe('and', () => {
   it('should return and', () => {
-    const query = new QueryBuilder().filter(f => f.and(a => {
-      a.eq('name', 'John Doe');
-      a.eq('id', 1);
-    })).toQuery();
+    const query = new QueryBuilder().filter(f => f.and(a => a
+      .eq('name', 'John Doe')
+      .eq('id', 1)
+    )).toQuery();
     const expected = "?$filter=name eq 'John Doe' and id eq 1";
     expect(query).toEqual(expected);
   });
@@ -13,10 +13,10 @@ describe('and', () => {
 
 describe('or', () => {
   it('should return or', () => {
-    const query = new QueryBuilder().filter(f => f.or(o => {
-      o.eq('name', 'John Doe');
-      o.eq('id', 1);
-    })).toQuery();
+    const query = new QueryBuilder().filter(f => f.or(o => o
+      .eq('name', 'John Doe')
+      .eq('id', 1)
+    )).toQuery();
     const expected = "?$filter=name eq 'John Doe' or id eq 1";
     expect(query).toEqual(expected);
   });

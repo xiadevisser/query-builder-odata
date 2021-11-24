@@ -83,7 +83,7 @@ query => `"?$count=true"`
 
 ```
 const query = new QueryBuilder()
-  .select('id,name')
+  .select('id', 'name')
   .toQuery();
 ```
 
@@ -93,7 +93,7 @@ query => `"?$select=id,name"`
 
 ```
 const query = new QueryBuilder()
-  .orderBy('id desc,name')
+  .orderBy('id desc' ,'name')
   .toQuery();
 ```
 
@@ -127,10 +127,10 @@ Expand can be used together with `top, skip, count, select, orderBy, filter`
 
 ```
 const query = new QueryBuilder()
-  .expand('Books', e => {
-    e.select('title');
-    e.orderBy('isbn');
-  })
+  .expand('Books', e => e
+    .select('title')
+    .orderBy('isbn')
+  )
   .toQuery();
 ```
 
@@ -156,10 +156,10 @@ When using multiple operators, the logical `and` operator is used by default.
 
 ```
 const query = new QueryBuilder()
-  .filter(f => {
-    f.startsWith('name', 'John');
-    f.gt('rating', 5);
-  })
+  .filter(f => f
+    .startsWith('name', 'John')
+    .gt('rating', 5)
+  )
   .toQuery();
 ```
 
@@ -172,10 +172,10 @@ Supported operators: `and, or`
 ```
 const query = new QueryBuilder()
   .filter(f =>
-    f.or(o => {
-      o.startsWith('name', 'John');
-      o.gt('rating', 5);
-    })
+    f.or(o => o
+      .startsWith('name', 'John')
+      .gt('rating', 5)
+    )
   )
   .toQuery();
 ```

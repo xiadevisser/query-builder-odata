@@ -32,7 +32,7 @@ describe('count', () => {
 
 describe('select', () => {
   it('should return select', () => {
-    const query = new QueryBuilder().select('id,name').toQuery();
+    const query = new QueryBuilder().select('id', 'name').toQuery();
     const expected = "?$select=id,name";
     expect(query).toEqual(expected);
   });
@@ -40,7 +40,7 @@ describe('select', () => {
 
 describe('orderBy', () => {
   it('should return orderBy', () => {
-    const query = new QueryBuilder().orderBy('id desc,name').toQuery();
+    const query = new QueryBuilder().orderBy('id desc', 'name').toQuery();
     const expected = "?$orderBy=id desc,name";
     expect(query).toEqual(expected);
   });
@@ -53,7 +53,7 @@ describe('expand', () => {
     expect(query).toEqual(expected);
   });
   it('should return expand with select and expand nesting', () => {
-    const query = new QueryBuilder().expand('Books', e => { e.select('id,name'); e.expand('Chapters') }).toQuery();
+    const query = new QueryBuilder().expand('Books', e => e.select('id', 'name').expand('Chapters')).toQuery();
     const expected = "?$expand=Books($select=id,name;$expand=Chapters)";
     expect(query).toEqual(expected);
   });
@@ -71,12 +71,12 @@ describe('filter', () => {
     expect(query).toEqual(expected);
   });
   it('should return filter with default and operator', () => {
-    const query = new QueryBuilder().filter(f => { f.eq('name', 'John Doe'); f.eq('id', 1); }).toQuery();
+    const query = new QueryBuilder().filter(f => f.eq('name', 'John Doe').eq('id', 1)).toQuery();
     const expected = "?$filter=name eq 'John Doe' and id eq 1";
     expect(query).toEqual(expected);
   });
   it('should return filter with or operator', () => {
-    const query = new QueryBuilder().filter(f => f.or(a => { a.eq('name', 'John Doe'); a.eq('id', 1); })).toQuery();
+    const query = new QueryBuilder().filter(f => f.or(a => a.eq('name', 'John Doe').eq('id', 1))).toQuery();
     const expected = "?$filter=name eq 'John Doe' or id eq 1";
     expect(query).toEqual(expected);
   });
@@ -87,16 +87,15 @@ describe('filter', () => {
   });
   it('should return filter with double nesting', () => {
     const query = new QueryBuilder().filter(f =>
-      f.or(o => {
-        o.eq('name', 'John Doe');
-        o.eq('id', 1);
-        o.and(a => {
-          a.eq('name', 'Jane');
-          a.eq('rating', 5);
-        })
-      })
-    )
-      .toQuery();
+      f.or(o => o
+        .eq('name', 'John Doe')
+        .eq('id', 1)
+        .and(a => a
+          .eq('name', 'Jane')
+          .eq('rating', 5)
+        )
+      )
+    ).toQuery();
     const expected = "?$filter=name eq 'John Doe' or id eq 1 or (name eq 'Jane' and rating eq 5)";
     expect(query).toEqual(expected);
   });
