@@ -2,7 +2,8 @@
 
 query-builder-odata builds OData v4 queries.
 
-![Action Status](https://github.com/xiadevisser/query-builder-odata/actions/workflows/build.yml/badge.svg)
+[![Action Status](https://github.com/xiadevisser/query-builder-odata/actions/workflows/build.yml/badge.svg)](https://github.com/xiadevisser/query-builder-odata)
+[![License](https://img.shields.io/github/license/xiadevisser/query-builder-odata)](/LICENSE)
 
 ## Install
 

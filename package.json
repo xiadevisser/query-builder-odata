@@ -1,6 +1,7 @@
 {
   "name": "query-builder-odata",
   "version": "1.0.0",
+  "license": "MIT",
   "scripts": {
     "start": "npx tsc -w",
     "build": "npx tsc",
