@@ -5,7 +5,7 @@ query-builder-odata builds OData v4 queries.
 [![Action Status](https://github.com/xiadevisser/query-builder-odata/actions/workflows/build.yml/badge.svg)](https://github.com/xiadevisser/query-builder-odata)
 [![License](https://img.shields.io/github/license/xiadevisser/query-builder-odata)](/LICENSE)
 
-## Install
+## Installation
 
 ```
 yarn add query-builder-odata
@@ -20,6 +20,8 @@ npm install --save query-builder-odata
 ### Create a query
 
 ```
+import { QueryBuilder } from 'query-builder-odata';
+
 const query = new QueryBuilder()
   .top(10)
   .skip(10)
