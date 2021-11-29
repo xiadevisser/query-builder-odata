@@ -34,7 +34,7 @@ const query = new QueryBuilder()
   .filter(f => f.eq('name', 'John Doe'))
   .toQuery();
 ```
-query => `"?$top=10&$skip=10&$count=true&$select=name&$orderBy=name&$expand=Books($select=title)&$filter=name eq 'John Doe'"`
+query => `"?$top=10&$skip=10&$count=true&$select=name&$orderby=name&$expand=Books($select=title)&$filter=name eq 'John Doe'"`
 
 ## Usage
 
@@ -50,7 +50,7 @@ query => `"?$top=10&$skip=10&$count=true&$select=name&$orderBy=name&$expand=Book
 - [Filtering](#filtering)
   - [Comparison operator](#comparison-operator)
   - [Logical operator](#logical-operator)
-
+- [Duplicate query operators](#duplicate-query-operators)
 
 ### Pagination
 
@@ -186,3 +186,35 @@ const query = new QueryBuilder()
 ```
 
 query => `"?$filter=startswith(name, 'John') or rating gt 5"`
+
+### Duplicate query operators
+
+When adding multiple query operators of the same type, one of two scenarios will happen: overriding or addition.
+
+#### Overriding
+
+The following operators will override the existing value: `top, skip, count`
+
+```
+const query = new QueryBuilder()
+  .top(10)
+  .top(15)
+  .toQuery();
+```
+
+query => `"?$top=15"`
+
+#### Addition
+
+The following operators will add to the existing value: `select, orderBy, expand, filter`
+
+```
+const query = new QueryBuilder()
+  .select('name')
+  .select('age')
+  .toQuery();
+```
+
+query => `"?$select=name,age"`
+
+More examples can be found in the [tests](test/query-builder.test.ts).
