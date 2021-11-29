@@ -2,7 +2,9 @@
 
 query-builder-odata builds OData v4 queries.
 
+[![NPM Version](https://img.shields.io/npm/v/query-builder-odata)](https://www.npmjs.com/package/query-builder-odata)
 [![Action Status](https://github.com/xiadevisser/query-builder-odata/actions/workflows/build.yml/badge.svg)](https://github.com/xiadevisser/query-builder-odata)
+[![Coverage Status](https://coveralls.io/repos/github/xiadevisser/query-builder-odata/badge.svg)](https://coveralls.io/github/xiadevisser/query-builder-odata)
 [![License](https://img.shields.io/github/license/xiadevisser/query-builder-odata)](/LICENSE)
 
 ## Installation

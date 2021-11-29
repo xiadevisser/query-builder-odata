@@ -24,6 +24,7 @@
     "build": "rimraf dist && webpack",
     "test": "jest",
     "test:cov": "jest --collect-coverage",
+    "test:coveralls": "jest --coverage --coverageReporters=text-lcov < coverage/lcov.info | coveralls",
     "pack": "npm run build && npm pack"
   },
   "devDependencies": {
@@ -32,6 +33,7 @@
     "@babel/preset-typescript": "^7.16.0",
     "@types/jest": "^27.0.3",
     "babel-jest": "^27.3.1",
+    "coveralls": "^3.1.1",
     "dts-bundle": "^0.7.3",
     "dts-bundle-webpack": "^1.0.2",
     "jest": "^27.3.1",
