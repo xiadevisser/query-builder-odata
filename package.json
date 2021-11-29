@@ -24,7 +24,7 @@
     "build": "rimraf dist && webpack",
     "test": "jest",
     "test:cov": "jest --collect-coverage",
-    "test:coveralls": "jest --coverage --coverageReporters=text-lcov < coverage/lcov.info | coveralls",
+    "test:coveralls": "jest --coverage && coveralls < coverage/lcov.info",
     "pack": "npm run build && npm pack"
   },
   "devDependencies": {
