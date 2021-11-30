@@ -24,7 +24,6 @@
     "build": "rimraf dist && webpack",
     "test": "jest",
     "test:cov": "jest --collect-coverage",
-    "test:coveralls": "jest --coverage && coveralls < coverage/lcov.info",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "pack": "npm run build && npm pack"
   },
