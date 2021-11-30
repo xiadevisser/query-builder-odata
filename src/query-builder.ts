@@ -1,7 +1,9 @@
-import { FilterBuilder } from "./filter-builder";
+import { QueryType, LogicalOperator } from './constants';
+import { FilterBuilder } from './filter-builder';
 
 export class QueryBuilder {
   public query: { [key: string]: QueryType } = {};
+
   public top(top: number): QueryBuilder {
     this.setQuery(QueryType.top, `${top}`);
     return this;
@@ -23,9 +25,9 @@ export class QueryBuilder {
     return this;
   }
   public expand(field: string, ...callbacks: ((builder: QueryBuilder) => void)[]): QueryBuilder {
-    let q: string[] = [field];
+    const q: string[] = [field];
     if (callbacks.length > 0) {
-      let b = new QueryBuilder();
+      const b = new QueryBuilder();
       callbacks.forEach(c => c(b));
       q.push(b.toSubQuery());
     }
@@ -34,14 +36,15 @@ export class QueryBuilder {
   }
   public filter(...callbacks: ((builder: FilterBuilder) => void)[]): QueryBuilder {
     if (callbacks.length > 0) {
-      let q: string[] = [];
-      var filterBuilder = new FilterBuilder();
+      const q: string[] = [];
+      const filterBuilder = new FilterBuilder();
       callbacks.forEach(c => c(filterBuilder));
       q.push(filterBuilder.toQuery());
-      this.addQuery(QueryType.filter, q.join(''), ' and ');
+      this.addQuery(QueryType.filter, q.join(''), ` ${LogicalOperator.and} `);
     }
     return this;
   }
+
   private addQuery(type: QueryType, field: string, delimiter: string): void {
     const queryKey = `$${type}=`;
     if (this.query[queryKey]) {
@@ -53,31 +56,15 @@ export class QueryBuilder {
   private setQuery(type: QueryType, field: string): void {
     this.query[`$${type}=`] = field;
   }
+
   public toQuery(): string {
-    if (Object.keys(this.query).length > 0) {
-      let tmp: string[] = [];
-      for (let q in this.query) {
-        tmp.push(`${q}${this.query[q]}`);
-      }
-      return '?' + tmp.join('&');
+    const queryKeys = Object.keys(this.query);
+    if (queryKeys.length > 0) {
+      return '?' + queryKeys.map(q => `${q}${this.query[q]}`).join('&');
     }
-    return "";
+    return '';
   }
   private toSubQuery(): string {
-    let tmp: string[] = [];
-    for (let q in this.query) {
-      tmp.push(`${q}${this.query[q]}`);
-    }
-    return '(' + tmp.join(';') + ')';
+    return '(' + Object.keys(this.query).map(q => `${q}${this.query[q]}`).join(';') + ')';
   }
-}
-
-class QueryType {
-  public static readonly top = 'top';
-  public static readonly skip = 'skip';
-  public static readonly count = 'count';
-  public static readonly select = 'select';
-  public static readonly orderBy = 'orderby';
-  public static readonly expand = 'expand';
-  public static readonly filter = 'filter';
 }
