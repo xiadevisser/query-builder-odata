@@ -13,6 +13,7 @@ module.exports = {
     library: {
       type: 'umd'
     },
+    globalObject: 'this',
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
