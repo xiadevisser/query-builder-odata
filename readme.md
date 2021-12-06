@@ -21,7 +21,7 @@ npm install --save query-builder-odata
 
 ### Create a query
 
-```
+```js
 import { QueryBuilder } from 'query-builder-odata';
 
 const query = new QueryBuilder()
@@ -56,7 +56,7 @@ query => `"?$top=10&$skip=10&$count=true&$select=name&$orderby=name&$expand=Book
 
 #### Top
 
-```
+```js
 const query = new QueryBuilder()
   .top(10)
   .toQuery();
@@ -66,7 +66,7 @@ query => `"?$top=10"`
 
 #### Skip
 
-```
+```js
 const query = new QueryBuilder()
   .skip(10)
   .toQuery();
@@ -76,7 +76,7 @@ query => `"?$skip=10"`
 
 ### Counting
 
-```
+```js
 const query = new QueryBuilder()
   .count()
   .toQuery();
@@ -86,7 +86,7 @@ query => `"?$count=true"`
 
 ### Selecting
 
-```
+```js
 const query = new QueryBuilder()
   .select('id', 'name')
   .toQuery();
@@ -96,7 +96,7 @@ query => `"?$select=id,name"`
 
 ### Ordering
 
-```
+```js
 const query = new QueryBuilder()
   .orderBy('id desc' ,'name')
   .toQuery();
@@ -106,7 +106,7 @@ query => `"?$orderBy=id desc,name"`
 
 ### Expanding
 
-```
+```js
 const query = new QueryBuilder()
   .expand('Books')
   .toQuery();
@@ -116,7 +116,7 @@ query => `"?$expand=Books"`
 
 #### Nested expand
 
-```
+```js
 const query = new QueryBuilder()
   .expand('Books', e =>
     e.expand('Chapters')
@@ -130,7 +130,7 @@ query => `"?$expand=Books($expand=Chapters)"`
 
 Expand can be used together with `top, skip, count, select, orderBy, filter`
 
-```
+```js
 const query = new QueryBuilder()
   .expand('Books', e => e
     .select('title')
@@ -143,7 +143,7 @@ query => `"?$expand=Books($select=title;$orderBy=isbn)"`
 
 ### Filtering
 
-```
+```js
 const query = new QueryBuilder()
   .filter(f => f.eq('name', 'John Doe'))
   .toQuery();
@@ -159,7 +159,7 @@ Supported operators:
 
 When using multiple operators, the logical `and` operator is used by default.
 
-```
+```js
 const query = new QueryBuilder()
   .filter(f => f
     .startsWith('name', 'John')
@@ -174,7 +174,7 @@ query => `"?$filter=startswith(name, 'John') and rating gt 5"`
 
 Supported operators: `and, or`
 
-```
+```js
 const query = new QueryBuilder()
   .filter(f =>
     f.or(o => o
@@ -195,7 +195,7 @@ When adding multiple query operators of the same type, one of two scenarios will
 
 The following operators will override the existing value: `top, skip, count`
 
-```
+```js
 const query = new QueryBuilder()
   .top(10)
   .top(15)
@@ -208,7 +208,7 @@ query => `"?$top=15"`
 
 The following operators will add to the existing value: `select, orderBy, expand, filter`
 
-```
+```js
 const query = new QueryBuilder()
   .select('name')
   .select('age')

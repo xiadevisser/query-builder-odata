@@ -35,7 +35,4 @@ module.exports = {
       outputAsModuleFolder: true,
     }),
   ],
-  optimization: {
-    minimize: true,
-  },
 };
