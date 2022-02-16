@@ -152,3 +152,29 @@ it('should return query from the readme', () => {
   const expected = '?$top=10&$skip=10&$count=true&$select=name&$orderby=name&$expand=Books($select=title)&$filter=name eq \'John Doe\'';
   expect(query).toEqual(expected);
 });
+
+describe('special charachters', () => {
+  it('should escape special charachters', () => {
+    const query = new QueryBuilder()
+      .select('name\'s')
+      .orderBy('name+s')
+      .expand('Book/s', e => e.select('title?s'))
+      .filter(f => f.or(o => o
+        .eq('name', 'John Doe%s')
+        .eq('name', 'John Doe#s')
+        .eq('name', 'John Doe&s')
+      ))
+      .toQuery();
+    const expected = '?$select=name\'\'s&$orderby=name%2Bs&$expand=Book%2Fs($select=title%3Fs)&$filter=name eq \'John Doe%25s\' or name eq \'John Doe%23s\' or name eq \'John Doe%26s\'';
+    expect(query).toEqual(expected);
+  });
+  it('should escape double special charachters', () => {
+    const query = new QueryBuilder()
+      .select('name+s')
+      .orderBy('name+s')
+      .toQuery();
+    const expected = '?$select=name%2Bs&$orderby=name%2Bs';
+    expect(query).toEqual(expected);
+  });
+});
+

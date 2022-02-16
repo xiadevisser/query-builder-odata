@@ -1,4 +1,5 @@
 import { LogicalOperator, ComparisonOperator, StringOperator } from './constants';
+import { replaceSpecialCharacters } from './helper';
 
 export class FilterBuilder {
   private filter: string[] = [];
@@ -62,13 +63,13 @@ export class FilterBuilder {
     this.filter.push(`${property} ${op} ${value}`);
     return this;
   }
-  private stringFunction(op: string, property: StringOperator, value: string | number): FilterBuilder {
+  private stringFunction(op: StringOperator, property: string, value: string | number): FilterBuilder {
     value = this.stringify(value);
     this.filter.push(`${op}(${property}, ${value})`);
     return this;
   }
   private stringify(...values: (string | number)[]): string {
-    values = values.map(v => typeof v === 'string' ? `'${v}'` : v);
+    values = values.map(v => typeof v === 'string' ? `'${replaceSpecialCharacters(v)}'` : v);
     const value = values.join(',');
     return values.length > 1 ? `(${value})` : value;
   }
