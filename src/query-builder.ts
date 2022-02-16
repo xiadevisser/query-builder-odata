@@ -1,5 +1,6 @@
 import { QueryType, LogicalOperator } from './constants';
 import { FilterBuilder } from './filter-builder';
+import { replaceSpecialCharacters } from './helper';
 
 export class QueryBuilder {
   public query: { [key: string]: QueryType } = {};
@@ -17,14 +18,17 @@ export class QueryBuilder {
     return this;
   }
   public select(...fields: string[]): QueryBuilder {
+    fields = fields.map(f => replaceSpecialCharacters(f));
     this.addQuery(QueryType.select, fields.join(','), ',');
     return this;
   }
   public orderBy(...fields: string[]): QueryBuilder {
+    fields = fields.map(f => replaceSpecialCharacters(f));
     this.addQuery(QueryType.orderBy, fields.join(','), ',');
     return this;
   }
   public expand(field: string, ...callbacks: ((builder: QueryBuilder) => void)[]): QueryBuilder {
+    field = replaceSpecialCharacters(field);
     const q: string[] = [field];
     if (callbacks.length > 0) {
       const b = new QueryBuilder();
