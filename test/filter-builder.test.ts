@@ -1,3 +1,4 @@
+import { ParameterType } from '../src/constants';
 import { QueryBuilder } from '../src/query-builder';
 
 describe('and', () => {
@@ -100,4 +101,21 @@ describe('contains', () => {
     const expected = '?$filter=contains(name, \'John\')';
     expect(query).toEqual(expected);
   });
+});
+
+describe('comparison operators with optional parameter types', () => {
+  it('datetime', () => {
+    const query = new QueryBuilder()
+      .filter(f => f.eq('publishdate', '2022-02-01', ParameterType.datetime))
+      .toQuery();
+    const expected = '?$filter=publishdate eq 2022-02-01';
+    expect(query).toEqual(expected);
+  });
+  it('guid', () => {
+    const query = new QueryBuilder()
+      .filter(f => f.eq('guid', '7bd6b28d-68e7-4d21-b540-3377380ce468', ParameterType.guid))
+      .toQuery();
+    const expected = '?$filter=guid eq 7bd6b28d-68e7-4d21-b540-3377380ce468';
+    expect(query).toEqual(expected);
+  }); 
 });
