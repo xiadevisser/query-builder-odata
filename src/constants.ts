@@ -28,3 +28,8 @@ export class StringOperator {
   public static readonly endsWith = 'endswith';
   public static readonly contains = 'contains';
 }
+
+export class ParameterType {
+  public static readonly datetime = 'datetime';
+  public static readonly guid = 'guid';
+}
