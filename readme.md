@@ -49,7 +49,9 @@ query => `"?$top=10&$skip=10&$count=true&$select=name&$orderby=name&$expand=Book
   - [Nested expand with other queries](#nested-expand-with-other-queries)
 - [Filtering](#filtering)
   - [Comparison operator](#comparison-operator)
+  - [String functions](#string-functions)
   - [Logical operator](#logical-operator)
+  - [Data types](#data-types)
 - [Duplicate query operators](#duplicate-query-operators)
 
 ### Pagination
@@ -153,9 +155,45 @@ query => `"?$filter=name eq 'John Doe'"`
 
 #### Comparison operator
 
-Supported operators:
-- `eq, ne, gt, ge, lt, le, in`
-- `startswith, endswith, contains`
+Supported operators: `eq, ne, gt, ge, lt, le, in`
+
+```js
+const query = new QueryBuilder()
+  .filter(f => f.gt('rating', 5))
+  .toQuery();
+```
+
+query => `"?$filter=rating gt 5"`
+
+#### String functions
+
+##### Returns boolean
+
+Supported operators: `startswith, endswith, contains`
+
+```js
+const query = new QueryBuilder()
+  .filter(f => f.startsWith('name', 'John'))
+  .toQuery();
+```
+
+query => `"?$filter=startswith(name, 'John')"`
+
+##### Returns non-boolean
+
+Supported operators: `concat, indexof, length, substring, tolower, toupper, trim`
+
+```js
+const query = new QueryBuilder()
+  .contains('name', `tolower('John')`, DataType.raw)
+  .toQuery();
+```
+
+query => `"?$filter=contains(name, tolower('John'))"`
+
+#### Logical operator
+
+Supported operators: `and, or`
 
 When using multiple operators, the logical `and` operator is used by default.
 
@@ -170,10 +208,6 @@ const query = new QueryBuilder()
 
 query => `"?$filter=startswith(name, 'John') and rating gt 5"`
 
-#### Logical operator
-
-Supported operators: `and, or`
-
 ```js
 const query = new QueryBuilder()
   .filter(f =>
@@ -186,6 +220,54 @@ const query = new QueryBuilder()
 ```
 
 query => `"?$filter=startswith(name, 'John') or rating gt 5"`
+
+#### Data types
+
+#### Date
+```js
+const query = new QueryBuilder()
+  .filter(f => f.eq('publishdate', new Date('2022-02-01')))
+  .toQuery();
+```
+
+query => `"?$filter=publishdate eq 2022-02-01T00:00:00.000Z"`
+
+#### DateTime
+```js
+ const query = new QueryBuilder()
+  .filter(f => f
+    .eq('publishdate', '2022-02-01', DataType.datetime)
+    .eq('publishdate', '2022-02-01', 'datetime')
+  )
+  .toQuery();
+```
+
+query => `?$filter=publishdate eq 2022-02-01 and publishdate eq 2022-02-01"`
+
+#### Guid
+```js
+const query = new QueryBuilder()
+  .filter(f => f
+    .eq('guid', '7bd6b28d-68e7-4d21-b540-3377380ce468', DataType.guid)
+    .eq('guid', '7bd6b28d-68e7-4d21-b540-3377380ce468', 'guid')
+  )
+  .toQuery();
+```
+
+query => `"?$filter=guid eq 7bd6b28d-68e7-4d21-b540-3377380ce468 and guid eq 7bd6b28d-68e7-4d21-b540-3377380ce468"`
+
+#### Raw
+```js
+const rawValue = 'Name';
+const query = new QueryBuilder()
+  .filter(f => f
+    .eq('raw', `tolower('${rawValue}')`, DataType.raw)
+    .eq('raw', `tolower('${rawValue}')`, 'raw')
+  )
+  .toQuery();
+```
+
+query => `"?$filter=raw eq tolower('Name') and raw eq tolower('Name')"`
 
 ### Duplicate query operators
 

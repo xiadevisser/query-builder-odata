@@ -1,4 +1,4 @@
-import { ParameterType } from '../src/constants';
+import { DataType } from '../src/constants';
 import { QueryBuilder } from '../src/query-builder';
 
 describe('and', () => {
@@ -104,18 +104,42 @@ describe('contains', () => {
 });
 
 describe('comparison operators with optional parameter types', () => {
+  it('date', () => {
+    const query = new QueryBuilder()
+      .filter(f => f.eq('publishdate', new Date('2022-02-01')))
+      .toQuery();
+    const expected = '?$filter=publishdate eq 2022-02-01T00:00:00.000Z';
+    expect(query).toEqual(expected);
+  });
   it('datetime', () => {
     const query = new QueryBuilder()
-      .filter(f => f.eq('publishdate', '2022-02-01', ParameterType.datetime))
+      .filter(f => f
+        .eq('publishdate', '2022-02-01', DataType.datetime)
+        .eq('publishdate', '2022-02-01', 'datetime')
+      )
       .toQuery();
-    const expected = '?$filter=publishdate eq 2022-02-01';
+    const expected = '?$filter=publishdate eq 2022-02-01 and publishdate eq 2022-02-01';
     expect(query).toEqual(expected);
   });
   it('guid', () => {
     const query = new QueryBuilder()
-      .filter(f => f.eq('guid', '7bd6b28d-68e7-4d21-b540-3377380ce468', ParameterType.guid))
+      .filter(f => f
+        .eq('guid', '7bd6b28d-68e7-4d21-b540-3377380ce468', DataType.guid)
+        .eq('guid', '7bd6b28d-68e7-4d21-b540-3377380ce468', 'guid')
+      )
       .toQuery();
-    const expected = '?$filter=guid eq 7bd6b28d-68e7-4d21-b540-3377380ce468';
+    const expected = '?$filter=guid eq 7bd6b28d-68e7-4d21-b540-3377380ce468 and guid eq 7bd6b28d-68e7-4d21-b540-3377380ce468';
     expect(query).toEqual(expected);
-  }); 
+  });
+  it('raw', () => {
+    const rawValue = 'Name';
+    const query = new QueryBuilder()
+      .filter(f => f
+        .contains('tolower(Raw)', `tolower('${rawValue}')`, DataType.raw)
+        .contains('tolower(Raw)', `tolower('${rawValue}')`, 'raw')
+      )
+      .toQuery();
+    const expected = '?$filter=contains(tolower(Raw), tolower(\'Name\')) and contains(tolower(Raw), tolower(\'Name\'))';
+    expect(query).toEqual(expected);
+  });
 });
